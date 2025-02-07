@@ -56,7 +56,9 @@ print_error() {
 
 build_regex
 
-if [ ! $(echo "$commit_message" | grep -E "$regexp") ]; then
+if echo "$commit_message" | grep -E "$regexp" > /dev/null; then
+    : # commit message is valid - do nothing
+else
     # commit message is invalid according to config - block commit
     print_error
     exit 1
