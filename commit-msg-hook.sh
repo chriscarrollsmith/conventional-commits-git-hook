@@ -16,9 +16,9 @@ set_config_values() {
 #
 #  if [ -f "$local_config" ]; then
 #    CONFIG=$local_config
-#    types=($(jq -r '.types[]' "$CONFIG"))
+#    types="build docs feat fix perf refactor style test chore"
 #  else
-    types='build docs feat fix perf refactor style test chore'
+    types="build docs feat fix perf refactor style test chore"
 #  fi
 }
 
@@ -46,20 +46,18 @@ commit_message=`head -n1 $INPUT_FILE`
 # how the commit message should be structured
 print_error() {
   regular_expression=$2
-  echo -e "\n\e[31m[Invalid Commit Message]"
-  echo -e "------------------------\033[0m\e[0m"
-  echo -e "Valid types: \e[36m${types}\033[0m"
-  echo -e "\e[37mActual commit message: \e[33m\"$commit_message\"\033[0m"
-  echo -e "\e[37mExample valid commit message: \e[36m\"fix(subject): message\"\033[0m"
-  echo -e "\e[37mRegex: \e[33m\"$regexp\"\033[0m"
+  printf "\n\033[31m[Invalid Commit Message]\033[0m\n"
+  printf "%s\n" "------------------------"
+  printf "Valid types: \033[36m%s\033[0m\n" "$types"
+  printf "\033[37mActual commit message: \033[33m\"%s\"\033[0m\n" "$commit_message"
+  printf "\033[37mExample valid commit message: \033[36m\"fix(subject): message\"\033[0m\n"
+  printf "\033[37mRegex: \033[33m\"%s\"\033[0m\n" "$regexp"
 }
 
 build_regex
 
-if echo "$commit_message" | grep -E "$regexp" > /dev/null; then
-    : # commit message is valid - do nothing
-else
-    # commit message is invalid according to config - block commit
-    print_error
-    exit 1
+if ! echo "$commit_message" | grep -qE "$regexp"; then
+  # commit message is invalid according to config - block commit
+  print_error
+  exit 1
 fi
