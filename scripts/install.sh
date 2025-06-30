@@ -1,6 +1,6 @@
 #!/bin/sh
 
-script_file="https://raw.githubusercontent.com/tapsellorg/conventional-commits-git-hook/master/commit-msg-hook.sh";
+script_file="https://raw.githubusercontent.com/chriscarrollsmith/conventional-commits-git-hook/master/commit-msg-hook.sh";
 
 init() {
     if [ -n "$1" ]; then
