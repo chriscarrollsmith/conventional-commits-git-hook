@@ -35,7 +35,7 @@ build_regex() {
     regexp="${regexp}$type|"
   done
 
-  regexp="${regexp%|})(\(.+\))?: "
+  regexp="${regexp%|})(\(.+\))?!?: "
 }
 
 # get the first line of the commit message
